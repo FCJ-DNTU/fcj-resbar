@@ -8,6 +8,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./nginx
+    image: anhduc8702/nginx:${BUILD_NUMBER}
     ports:
       - "3000:80"
   backend:
@@ -16,6 +17,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: backend
+    image: anhduc8702/backend:${BUILD_NUMBER}
     volumes:
       - /app/node_modules
       - ./backend:/app
@@ -26,6 +28,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./frontend
+    image: anhduc8702/frontend:${BUILD_NUMBER}
     volumes:
       - /app/node_modules
       - ./frontend:/app
