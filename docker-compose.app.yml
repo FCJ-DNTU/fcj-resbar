@@ -1,4 +1,9 @@
 version: "3"
+
+networks:
+  app-network:
+    name: fcj-resbar_app-network
+
 services:
   nginx:
     restart: always
@@ -11,7 +16,7 @@ services:
     ports:
       - "80:80"
     networks:
-      - fcj-network
+      - app-network
 
   backend:
     env_file:
@@ -26,13 +31,13 @@ services:
     ports:
       - "5000:5000"
     environment:
-      DB_HOST: mysql_container
+      DB_HOST: mysql
       DB_PORT: 3306
       DB_USER: admin
       DB_PASSWORD: letmein12345
       DB_NAME: resbar
     networks:
-      - fcj-network
+      - app-network
 
   frontend:
     stdin_open: true
@@ -44,10 +49,19 @@ services:
       - /app/node_modules
       - ./frontend:/app
     networks:
-      - fcj-network
+      - app-network
 
-  networks:
-    fcj-network:
-      external: true
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=letmein12345
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=letmein12345
+      - MYSQL_DATABASE=resbar
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
 
-
+volumes:
+  mysql-data:
