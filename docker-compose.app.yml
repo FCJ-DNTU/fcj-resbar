@@ -51,6 +51,7 @@ services:
     env_file: "./docker-compose-env/database.env"
     command: --init-file /data/application/init.sql
     volumes:
+      - mysql-data:/var/lib/mysql 
       - ./database/init.sql:/data/application/init.sql
     ports:
       - "33061:3306"
