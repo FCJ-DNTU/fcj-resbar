@@ -49,8 +49,10 @@ services:
   mysql:
     image: mysql:8.0
     env_file: "./docker-compose-env/database.env"
+    command: --init-file /data/application/init.sql
     volumes:
-      - mysql-data:/var/lib/mysql 
+      - ./database/init.sql:/data/application/init.sql
+      # - mysql-data:/var/lib/mysql 
     ports:
       - "33061:3306"
     networks:
