@@ -28,14 +28,6 @@ services:
     volumes:
       - /app/node_modules
       - ./backend:/app
-    ports:
-      - "5000:5000"
-    environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_USER: admin
-      DB_PASSWORD: letmein12345
-      DB_NAME: fcjresbar
     networks:
       - app-network
 
