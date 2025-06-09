@@ -28,6 +28,8 @@ services:
     volumes:
       - /app/node_modules
       - ./backend:/app
+    ports:
+      - "5000:5000
     networks:
       - app-network
 
