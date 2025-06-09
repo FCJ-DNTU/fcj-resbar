@@ -10,6 +10,9 @@ services:
       context: ./nginx
     ports:
       - "80:80"
+    networks:
+      - fcj-network
+
   backend:
     env_file:
       - path: "./docker-compose-env/backend.app.env"
@@ -22,6 +25,15 @@ services:
       - ./backend:/app
     ports:
       - "5000:5000"
+    environment:
+      DB_HOST: mysql_container
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: letmein12345
+      DB_NAME: resbar
+    networks:
+      - fcj-network
+
   frontend:
     stdin_open: true
     build:
@@ -31,5 +43,11 @@ services:
     volumes:
       - /app/node_modules
       - ./frontend:/app
+    networks:
+      - fcj-network
+
+  networks:
+    fcj-network:
+      external: true
 
 
