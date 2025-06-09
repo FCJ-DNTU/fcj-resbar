@@ -8,7 +8,6 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./nginx
-    image: anhduc8702/nginx:${BUILD_NUMBER}
     ports:
       - "3000:80"
   backend:
@@ -32,3 +31,5 @@ services:
     volumes:
       - /app/node_modules
       - ./frontend:/app
+
+
