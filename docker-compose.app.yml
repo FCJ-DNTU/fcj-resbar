@@ -20,7 +20,7 @@ services:
 
   backend:
     env_file:
-      - path: "./docker-compose-env/backend.app.env"
+      - path: "./docker-compose-env/backend.env"
       - path: "./docker-compose-env/database.env"
     build:
       dockerfile: Dockerfile
