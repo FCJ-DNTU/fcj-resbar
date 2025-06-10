@@ -10,22 +10,19 @@ services:
       context: ./nginx
     ports:
       - "80:80"
-
   backend:
     env_file:
       - path: "./docker-compose-env/backend.env"
       - path: "./docker-compose-env/database.env"
     build:
       dockerfile: Dockerfile
-      context: backend
+      context: ./backend
     image: anhduc8702/backend:${BUILD_NUMBER}
     volumes:
       - /app/node_modules
       - ./backend:/app
     ports:
       - "5000:5000"
-  
-
   frontend:
     stdin_open: true
     build:
@@ -45,3 +42,4 @@ services:
       - "33061:3306"
 volumes:
   mysql-data:
+  

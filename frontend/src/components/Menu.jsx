@@ -65,7 +65,7 @@ const Menu = ({ history }) => {
             <li className="nav-item">
               <Link to="/dashboard" className="nav-link">
                 <i className="nav-icon fas fa-tachometer-alt" />{" "}
-                <p> Dashboard</p>
+                <p> Dashboard-test</p>
               </Link>
             </li>
 
