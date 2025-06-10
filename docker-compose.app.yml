@@ -1,9 +1,4 @@
 version: "3"
-
-networks:
-  app-network:
-    name: fcj-resbar_app-network
-
 services:
   nginx:
     restart: always
@@ -15,8 +10,6 @@ services:
       context: ./nginx
     ports:
       - "80:80"
-    networks:
-      - app-network
 
   backend:
     env_file:
@@ -31,8 +24,7 @@ services:
       - ./backend:/app
     ports:
       - "5000:5000"
-    networks:
-      - app-network
+  
 
   frontend:
     stdin_open: true
@@ -43,8 +35,6 @@ services:
     volumes:
       - /app/node_modules
       - ./frontend:/app
-    networks:
-      - app-network
 
   mysql:
     image: mysql:8.0
@@ -53,8 +43,4 @@ services:
       - mysql-data:/var/lib/mysql 
     ports:
       - "33061:3306"
-    networks:
-      - app-network
-    
-volumes:
-  mysql-data:
+ 
