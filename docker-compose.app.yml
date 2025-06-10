@@ -43,4 +43,5 @@ services:
       - mysql-data:/var/lib/mysql 
     ports:
       - "33061:3306"
- 
+volumes:
+  mysql-data:
