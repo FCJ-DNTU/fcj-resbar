@@ -1,7 +1,6 @@
 version: "3"
 services:
   nginx:
-    container_name: nginx
     image: anhduc8702/nginx:${BUILD_NUMBER}
     restart: always
     depends_on:
