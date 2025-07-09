@@ -18,12 +18,12 @@ pipeline {
             steps {
                 script {
                     sh """
-                        docker tag anhduc8702/backend:${BUILD_NUMBER} ${BACKEND_REPO}:${BUILD_NUMBER}
-                        docker tag anhduc8702/backend:${BUILD_NUMBER} ${BACKEND_REPO}:latest
-                        docker tag anhduc8702/frontend:${BUILD_NUMBER} ${FRONTEND_REPO}:${BUILD_NUMBER}
-                        docker tag anhduc8702/frontend:${BUILD_NUMBER} ${FRONTEND_REPO}:latest
-                        docker tag anhduc8702/nginx:${BUILD_NUMBER} ${NGINX_REPO}:${BUILD_NUMBER}
-                        docker tag anhduc8702/nginx:${BUILD_NUMBER} ${NGINX_REPO}:latest
+                        docker tag backend-app-cyclone:${BUILD_NUMBER} ${BACKEND_REPO}:${BUILD_NUMBER}
+                        docker tag backend-app-cyclone:${BUILD_NUMBER} ${BACKEND_REPO}:latest
+                        docker tag frontend-app-cyclone:${BUILD_NUMBER} ${FRONTEND_REPO}:${BUILD_NUMBER}
+                        docker tag frontend-app-cyclone:${BUILD_NUMBER} ${FRONTEND_REPO}:latest
+                        docker tag nginx-app-cyclone:${BUILD_NUMBER} ${NGINX_REPO}:${BUILD_NUMBER}
+                        docker tag nginx-app-cyclone:${BUILD_NUMBER} ${NGINX_REPO}:latest
                     """
                 }
             }
