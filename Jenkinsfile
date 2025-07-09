@@ -44,6 +44,17 @@ pipeline {
                 }
             }
         }
-         
+        stage('Push Images') {
+            steps {
+                script {
+                    docker.image(env.BACKEND_IMAGE).push("${env.BUILD_NUMBER}")
+                    docker.image(env.BACKEND_IMAGE).push("latest")
+                    docker.image(env.FRONTEND_IMAGE).push("${env.BUILD_NUMBER}")
+                    docker.image(env.FRONTEND_IMAGE).push("latest")
+                    docker.image(env.NGINX_IMAGE).push("${env.BUILD_NUMBER}")
+                    docker.image(env.NGINX_IMAGE).push("latest")
+                }
+            }
+        }
     }
 }

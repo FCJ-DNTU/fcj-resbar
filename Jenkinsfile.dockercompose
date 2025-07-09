@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Build Images with Docker Compose') {
             steps {
-                sh 'docker-compose -f docker-compose.app.yml build'
+                sh 'docker compose -f docker-compose.app.yml build'
             }
         }
         stage('Tag Images for ECR') {
