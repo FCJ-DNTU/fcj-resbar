@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   nginx:
     build:
@@ -11,32 +12,36 @@ services:
       - frontend
     ports:
       - "80:80"
+
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     image: backend-app-cyclone:${BUILD_NUMBER}
-    volumes:
-      - /app/node_modules
-      - ./backend:/app
     ports:
       - "5000:5000"
+    # Uncomment these lines if you want to enable volume for development
+    # volumes:
+    #   - ./backend:/app
+    #   - /app/node_modules
+
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     image: frontend-app-cyclone:${BUILD_NUMBER}
-    volumes:
-      - /app/node_modules
-      - ./frontend:/app
+    # Uncomment these lines if you want to enable volume for development
+    # volumes:
+    #   - ./frontend:/app
+    #   - /app/node_modules
 
   mysql:
     image: mysql:8.0
     env_file: "./docker-compose-env/database.env"
     volumes:
-      - mysql-data:/var/lib/mysql 
+      - mysql-data:/var/lib/mysql
     ports:
       - "33061:3306"
+
 volumes:
   mysql-data:
-  
