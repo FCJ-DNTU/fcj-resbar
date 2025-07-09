@@ -25,9 +25,11 @@ pipeline {
         }
         stage('Login to ECR') {
             steps {
-                sh """
-                    aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REGISTRY}
-                """
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
+                    sh """
+                        aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REGISTRY}
+                    """
+                }
             }
         }
         stage('Push Images') {
