@@ -5,8 +5,6 @@ pipeline {
         BACKEND_REPO = "${ECR_REGISTRY}/backend-app-cyclone"
         FRONTEND_REPO = "${ECR_REGISTRY}/frontend-app-cyclone"
         AWS_REGION = "ap-southeast-1"
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
     }
     stages {
         stage('Build Backend') {
@@ -29,10 +27,7 @@ pipeline {
         }
         stage('Login to ECR') {
             steps {
-                withCredentials([
-                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
-                ]) {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins-admin']]) {
                     sh """
                         aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REGISTRY}
                     """
