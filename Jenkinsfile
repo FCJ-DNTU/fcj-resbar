@@ -4,7 +4,7 @@ pipeline {
         ECR_REGISTRY = "730335321184.dkr.ecr.ap-southeast-1.amazonaws.com"
         BACKEND_REPO = "${ECR_REGISTRY}/backend-app-cyclone"
         FRONTEND_REPO = "${ECR_REGISTRY}/frontend-app-cyclone"
-        CREDENTIALS_ID = "aws-credentials"
+        AWS_REGION = "ap-southeast-1"
     }
     stages {
         stage('Build Backend') {
@@ -23,17 +23,22 @@ pipeline {
                 }
             }
         }
+        stage('Login to ECR') {
+            steps {
+                script {
+                    sh """
+                    aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REGISTRY}
+                    """
+                }
+            }
+        }
         stage('Push Images') {
             steps {
                 script {
-                    docker.withRegistry("https://${env.ECR_REGISTRY}", env.CREDENTIALS_ID) {
-                        backendImage.push()
-                        backendImageLatest.push()
-                    }
-                    docker.withRegistry("https://${env.ECR_REGISTRY}", env.CREDENTIALS_ID) {
-                        frontendImage.push()
-                        frontendImageLatest.push()
-                    }
+                    backendImage.push("${env.BUILD_NUMBER}")
+                    backendImage.push("latest")
+                    frontendImage.push("${env.BUILD_NUMBER}")
+                    frontendImage.push("latest")
                 }
             }
         }
