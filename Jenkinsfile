@@ -4,7 +4,7 @@ pipeline {
         ECR_REGISTRY = "730335321184.dkr.ecr.ap-southeast-1.amazonaws.com"
         BACKEND_REPO = "${ECR_REGISTRY}/backend-app-cyclone"
         FRONTEND_REPO = "${ECR_REGISTRY}/frontend-app-cyclone"
-        CREDENTIALS_ID = "ecr:aws-credentials"
+        CREDENTIALS_ID = "aws-credentials"
     }
     stages {
         stage('Build Backend') {
