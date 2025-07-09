@@ -26,10 +26,7 @@ services:
       - mysql
     build:
       dockerfile: Dockerfile
-      context: backend
-    volumes:
-      - /app/node_modules
-      - ./backend:/app
+      context: ./backend
     ports:
       - "5000:5000"
   frontend:
@@ -37,6 +34,3 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./frontend
-    volumes:
-      - /app/node_modules
-      - ./frontend:/app

@@ -20,21 +20,13 @@ services:
     image: backend-app-cyclone:${BUILD_NUMBER}
     ports:
       - "5000:5000"
-    # Uncomment these lines if you want to enable volume for development
-    # volumes:
-    #   - ./backend:/app
-    #   - /app/node_modules
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     image: frontend-app-cyclone:${BUILD_NUMBER}
-    # Uncomment these lines if you want to enable volume for development
-    # volumes:
-    #   - ./frontend:/app
-    #   - /app/node_modules
-
+    
   mysql:
     image: mysql:8.0
     env_file: "./docker-compose-env/database.env"
