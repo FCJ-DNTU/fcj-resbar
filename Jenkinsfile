@@ -4,6 +4,7 @@ pipeline {
         ECR_REGISTRY = "730335321184.dkr.ecr.ap-southeast-1.amazonaws.com"
         BACKEND_REPO = "${ECR_REGISTRY}/backend-app-cyclone"
         FRONTEND_REPO = "${ECR_REGISTRY}/frontend-app-cyclone"
+        NGINX_REPO = "${ECR_REGISTRY}/nginx-app-cyclone"
         AWS_REGION = "ap-southeast-1"
     }
     stages {
@@ -25,6 +26,15 @@ pipeline {
                 }
             }
         }
+        stage('Build nginx') {
+            steps {
+                script {
+                    def nginxImage = docker.build("${env.NGINX_REPO}:${env.BUILD_NUMBER}", "nginx")
+                    def nginxImageLatest = docker.build("${env.NGINX_REPO}:latest", "nginx")
+                    env.NGINX_IMAGE = nginxImage.id
+                }
+            }
+        }
         stage('Login to ECR') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins-admin']]) {
@@ -34,15 +44,6 @@ pipeline {
                 }
             }
         }
-        stage('Push Images') {
-            steps {
-                script {
-                    docker.image(env.BACKEND_IMAGE).push("${env.BUILD_NUMBER}")
-                    docker.image(env.BACKEND_IMAGE).push("latest")
-                    docker.image(env.FRONTEND_IMAGE).push("${env.BUILD_NUMBER}")
-                    docker.image(env.FRONTEND_IMAGE).push("latest")
-                }
-            }
-        }
+         
     }
 }

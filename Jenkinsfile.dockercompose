@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+    environment {
+        ECR_REGISTRY = "730335321184.dkr.ecr.ap-southeast-1.amazonaws.com"
+        BACKEND_REPO = "${ECR_REGISTRY}/backend-app-cyclone"
+        FRONTEND_REPO = "${ECR_REGISTRY}/frontend-app-cyclone"
+        NGINX_REPO = "${ECR_REGISTRY}/nginx-app-cyclone"
+        AWS_REGION = "ap-southeast-1"
+        BUILD_NUMBER = "${env.BUILD_NUMBER}"
+    }
+    stages {
+        stage('Build Images with Docker Compose') {
+            steps {
+                sh 'docker-compose -f docker-compose.app.yml build'
+            }
+        }
+        stage('Tag Images for ECR') {
+            steps {
+                script {
+                    sh """
+                        docker tag anhduc8702/backend:${BUILD_NUMBER} ${BACKEND_REPO}:${BUILD_NUMBER}
+                        docker tag anhduc8702/backend:${BUILD_NUMBER} ${BACKEND_REPO}:latest
+                        docker tag anhduc8702/frontend:${BUILD_NUMBER} ${FRONTEND_REPO}:${BUILD_NUMBER}
+                        docker tag anhduc8702/frontend:${BUILD_NUMBER} ${FRONTEND_REPO}:latest
+                        docker tag anhduc8702/nginx:${BUILD_NUMBER} ${NGINX_REPO}:${BUILD_NUMBER}
+                        docker tag anhduc8702/nginx:${BUILD_NUMBER} ${NGINX_REPO}:latest
+                    """
+                }
+            }
+        }
+        stage('Login to ECR') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins-admin']]) {
+                    sh """
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                    """
+                }
+            }
+        }
+        stage('Push Images to ECR') {
+            steps {
+                script {
+                    sh """
+                        docker push ${BACKEND_REPO}:${BUILD_NUMBER}
+                        docker push ${BACKEND_REPO}:latest
+                        docker push ${FRONTEND_REPO}:${BUILD_NUMBER}
+                        docker push ${FRONTEND_REPO}:latest
+                        docker push ${NGINX_REPO}:${BUILD_NUMBER}
+                        docker push ${NGINX_REPO}:latest
+                    """
+                }
+            }
+        }
+    }
+}
